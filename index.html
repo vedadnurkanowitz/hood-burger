@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="sl" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hood Burger - Street Food na Visokem Nivoju</title>
+    <meta
+      name="description"
+      content="Hood Burger je sodobna ulična restavracija, kjer strežemo najokusnejše goveje burgerje, steak sendviče in čisto pravi domači krompirček."
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter & Oswald -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              hood: {
+                black: "#121212",
+                dark: "#1E1E1E",
+                yellow: "#FFC107",
+                red: "#FF0000",
+                gold: "#F59E0B",
+                gray: "#2D2D2D",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Oswald", "sans-serif"],
+            },
+            backgroundImage: {
+              "hero-pattern":
+                "linear-gradient(to right, rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.4)), url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
+              texture:
+                "url('https://www.transparenttextures.com/patterns/dark-matter.png')",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #1e1e1e;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #f59e0b;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #d97706;
+      }
+
+      /* Hamburger Animation */
+      .hamburger-active .line-1 {
+        transform: rotate(45deg) translate(5px, 6px);
+      }
+
+      .hamburger-active .line-2 {
+        opacity: 0;
+      }
+
+      .hamburger-active .line-3 {
+        transform: rotate(-45deg) translate(5px, -6px);
+      }
+
+      /* Nav Link Entry Animation State */
+      .nav-link-enter {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-hood-black text-gray-200 font-sans antialiased selection:bg-hood-gold selection:text-white"
+  >
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <!-- Logo -->
+          <div class="flex-shrink-0 flex items-center relative z-[70]">
+            <a
+              href="#"
+              class="text-3xl font-display font-bold text-white tracking-wider"
+            >
+              <img
+                src="/images/logo.png"
+                alt="Hood Burger Logo"
+                width="100"
+                height="100"
+              />
+            </a>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex space-x-8 items-center">
+            <a
+              href="#about"
+              class="text-sm font-semibold uppercase tracking-widest hover:text-hood-yellow transition-colors text-white"
+              >Zgodba</a
+            >
+            <a
+              href="#menu"
+              class="text-sm font-semibold uppercase tracking-widest hover:text-hood-yellow transition-colors text-white"
+              >Menu</a
+            >
+            <a
+              href="#ingredients"
+              class="text-sm font-semibold uppercase tracking-widest hover:text-hood-yellow transition-colors text-white"
+              >Sestavine</a
+            >
+            <a
+              href="#locations"
+              class="text-sm font-semibold uppercase tracking-widest hover:text-hood-yellow transition-colors text-white"
+              >Lokacije</a
+            >
+            <a
+              href="#contact"
+              class="px-6 py-2 bg-hood-yellow text-hood-black font-bold uppercase text-sm rounded hover:bg-white transition-all transform hover:scale-105"
+              >Naroči Online</a
+            >
+          </div>
+
+          <!-- Mobile Menu Button (Hamburger) -->
+          <div class="md:hidden flex items-center relative z-[70]">
+            <button
+              id="mobile-menu-btn"
+              class="text-white hover:text-hood-yellow focus:outline-none w-8 h-8 flex flex-col justify-center space-y-1.5 transition-all duration-300 group"
+            >
+              <span
+                class="block w-8 h-0.5 bg-current transition-all duration-300 line-1 group-hover:bg-hood-yellow"
+              ></span>
+              <span
+                class="block w-8 h-0.5 bg-current transition-all duration-300 line-2 group-hover:bg-hood-yellow"
+              ></span>
+              <span
+                class="block w-8 h-0.5 bg-current transition-all duration-300 line-3 group-hover:bg-hood-yellow"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Panel (Full Screen) -->
+      <div
+        id="mobile-menu"
+        class="fixed inset-0 z-[60] bg-hood-black transform translate-x-full transition-transform duration-[600ms] ease-[cubic-bezier(0.7,0,0.3,1)] flex flex-col justify-center items-center space-y-8"
+      >
+        <!-- Background Decoration -->
+        <div
+          class="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-40 pointer-events-none"
+        ></div>
+        <div
+          class="absolute bottom-0 left-0 w-80 h-80 bg-hood-yellow/5 rounded-full blur-[100px] pointer-events-none"
+        ></div>
+
+        <!-- Links -->
+        <a
+          href="#about"
+          class="text-4xl md:text-5xl font-display font-bold text-white hover:text-hood-yellow mobile-link opacity-0 translate-y-8 transition-all duration-500"
+          >Zgodba</a
+        >
+        <a
+          href="#menu"
+          class="text-4xl md:text-5xl font-display font-bold text-white hover:text-hood-yellow mobile-link opacity-0 translate-y-8 transition-all duration-500"
+          >Menu</a
+        >
+        <a
+          href="#ingredients"
+          class="text-4xl md:text-5xl font-display font-bold text-white hover:text-hood-yellow mobile-link opacity-0 translate-y-8 transition-all duration-500"
+          >Sestavine</a
+        >
+        <a
+          href="#locations"
+          class="text-4xl md:text-5xl font-display font-bold text-white hover:text-hood-yellow mobile-link opacity-0 translate-y-8 transition-all duration-500"
+          >Lokacije</a
+        >
+        <a
+          href="#contact"
+          class="text-4xl md:text-5xl font-display font-bold text-hood-yellow mobile-link opacity-0 translate-y-8 transition-all duration-500"
+          >Naroči Online</a
+        >
+
+        <div
+          class="absolute bottom-10 text-gray-600 text-xs font-bold tracking-widest uppercase opacity-0 translate-y-8 transition-all duration-500 mobile-link-footer"
+        >
+          Street Food Na Visokem Nivoju
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      class="relative h-screen flex items-center justify-center bg-hero-pattern bg-cover bg-center bg-fixed bg-no-repeat"
+    >
+      <div
+        class="relative z-10 text-center px-4 max-w-4xl mx-auto"
+        data-aos="fade-up"
+      >
+        <span
+          class="block text-hood-yellow font-display font-bold tracking-[0.2em] uppercase mb-4 text-lg md:text-xl"
+          >Od Leta 2012</span
+        >
+        <h1
+          class="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white mb-6 leading-tight"
+        >
+          STREET FOOD <br />
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-hood-yellow to-orange-500"
+            >NA VISOKEM NIVOJU</span
+          >
+        </h1>
+        <p
+          class="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed"
+        >
+          Pravi burgerji. Prave sestavine. Prava revolucija. Doživi okus 100%
+          slovenske govedine in domačih krompirjevih bombic.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+          <a
+            href="#menu"
+            class="px-8 py-4 bg-hood-yellow text-hood-black font-display font-bold uppercase tracking-wider text-lg rounded hover:bg-white transition-all shadow-lg shadow-hood-yellow/20"
+          >
+            Odkrij Menu
+          </a>
+          <a
+            href="#locations"
+            class="px-8 py-4 border-2 border-white text-white font-display font-bold uppercase tracking-wider text-lg rounded hover:bg-white hover:text-hood-black transition-all"
+          >
+            Najdi Lokacijo
+          </a>
+        </div>
+      </div>
+
+      <!-- Scroll Down Indicator -->
+      <div
+        class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce"
+      >
+        <a
+          href="#about"
+          class="text-white hover:text-hood-yellow transition-colors"
+        >
+          <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-hood-black relative overflow-hidden">
+      <div
+        class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-hood-yellow/5 rounded-full blur-3xl"
+      ></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div class="space-y-6">
+            <h2
+              class="text-hood-yellow font-display font-bold text-xl tracking-widest uppercase"
+            >
+              Naša Zgodba
+            </h2>
+            <h3 class="text-4xl md:text-5xl font-bold text-white leading-tight">
+              Slovenska Burger <br />Revolucija
+            </h3>
+            <div class="w-20 h-1 bg-hood-yellow"></div>
+            <p class="text-gray-400 text-lg leading-relaxed">
+              Hood Burger se je prvič predstavil leta 2012 na štantu pred Sax
+              Pubom v Ljubljani, kot testni štant, kjer sta Til Pleterski in
+              Klemen Ptičak testirala odziv mimoidočih na njun Classic burger.
+            </p>
+            <p class="text-gray-400 text-lg leading-relaxed">
+              Odziv je bil fantastičen! Hood Burger je tako novembra istega leta
+              dobil svojo prvo stalno lokacijo pred centrom Interspar Vič. Ta
+              dogodek je za vedno spremenil slovensko burger sceno. Danes smo
+              sodobna ulična restavracija, a ostajamo zvesti koreninam.
+            </p>
+          </div>
+          <div class="relative">
+            <img
+              src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Hood Burger Story"
+              class="relative rounded-lg shadow-2xl transition-all duration-700 w-full object-cover h-[500px]"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ingredients Info -->
+    <section
+      id="ingredients"
+      class="py-20 bg-hood-dark border-y border-white/5"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2
+            class="text-3xl md:text-4xl font-display font-bold text-white mb-4"
+          >
+            Lokalno & Sveže
+          </h2>
+          <p class="text-gray-400">
+            Kakovostne sestavine so za nas primarnega pomena. Podpiramo lokalne
+            pridelovalce in se trudimo manjšati negativen vpliv na okolje.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div
+            class="bg-hood-black p-8 rounded-xl border border-white/5 hover:border-hood-yellow/50 transition-all group"
+          >
+            <div
+              class="w-16 h-16 bg-hood-yellow/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-hood-yellow transition-colors"
+            >
+              <i
+                class="fas fa-cow text-2xl text-hood-yellow group-hover:text-hood-black"
+              ></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">
+              100% Slovenska Govedina
+            </h3>
+            <p class="text-gray-400 text-sm">
+              Uporabljamo zorjeno 100% pašno govedino slovenskega porekla za
+              najboljši in najbolj poln okus.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div
+            class="bg-hood-black p-8 rounded-xl border border-white/5 hover:border-hood-yellow/50 transition-all group"
+          >
+            <div
+              class="w-16 h-16 bg-hood-yellow/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-hood-yellow transition-colors"
+            >
+              <i
+                class="fas fa-bread-slice text-2xl text-hood-yellow group-hover:text-hood-black"
+              ></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Domače Bombice</h3>
+            <p class="text-gray-400 text-sm">
+              Vsak dan sveže pečene domače krompirjeve bombice (potato rolls),
+              ki se topijo v ustih.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div
+            class="bg-hood-black p-8 rounded-xl border border-white/5 hover:border-hood-yellow/50 transition-all group"
+          >
+            <div
+              class="w-16 h-16 bg-hood-yellow/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-hood-yellow transition-colors"
+            >
+              <i
+                class="fas fa-carrot text-2xl text-hood-yellow group-hover:text-hood-black"
+              ></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Lokalna Zelenjava</h3>
+            <p class="text-gray-400 text-sm">
+              100% slovenska zelenjava iz okoliških kmetij, vedno sveža in polna
+              vitaminov.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-hood-black relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <span
+            class="text-hood-yellow font-display font-bold tracking-widest uppercase text-sm"
+            >Naša Ponudba</span
+          >
+          <h2
+            class="text-4xl md:text-5xl font-display font-bold text-white mt-2"
+          >
+            Burgers & Steaks
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Menu Item: Classic -->
+          <div
+            class="bg-hood-dark rounded-xl overflow-hidden shadow-lg group hover:-translate-y-2 transition-transform duration-300"
+          >
+            <div class="h-48 bg-gray-800 relative overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Classic Burger"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div
+                class="absolute top-4 right-4 bg-hood-yellow text-hood-black font-bold px-3 py-1 text-xs rounded uppercase"
+              >
+                Top Izbira
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-display font-bold text-white mb-2">
+                Classic Burger
+              </h3>
+              <p class="text-gray-400 text-sm mb-4 min-h-[60px]">
+                Krompirjeva bombica popečena na maslu, 100% govedina slovenskega
+                porekla, naša classic hišna omaka, sveža solata, paradižnik in
+                Cheddar sir.
+              </p>
+              <div
+                class="flex justify-between items-center border-t border-white/10 pt-4"
+              >
+                <span class="text-hood-yellow font-bold text-lg"
+                  ><i class="fas fa-star text-xs mr-1"></i> Original</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item: Le Brie -->
+          <div
+            class="bg-hood-dark rounded-xl overflow-hidden shadow-lg group hover:-translate-y-2 transition-transform duration-300"
+          >
+            <div class="h-48 bg-gray-800 relative overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Le Brie"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-display font-bold text-white mb-2">
+                Le Brie
+              </h3>
+              <p class="text-gray-400 text-sm mb-4 min-h-[60px]">
+                Krompirjeva bombica, 100% govedina, hišna majoneza z
+                mariniranimi šampinjoni, paradižnik, sveža rukola in topljen
+                Brie sir.
+              </p>
+              <div
+                class="flex justify-between items-center border-t border-white/10 pt-4"
+              >
+                <span class="text-hood-yellow font-bold text-lg">Gourmet</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item: Jake 'n' Jay -->
+          <div
+            class="bg-hood-dark rounded-xl overflow-hidden shadow-lg group hover:-translate-y-2 transition-transform duration-300"
+          >
+            <div class="h-48 bg-gray-800 relative overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Jake n Jay"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-display font-bold text-white mb-2">
+                Jake 'n' Jay
+              </h3>
+              <p class="text-gray-400 text-sm mb-4 min-h-[60px]">
+                California style 70s. 100% govedina, ledenka, paradižnik, dvojni
+                Cheddar, popečena čebula in hišna California omaka.
+              </p>
+              <div
+                class="flex justify-between items-center border-t border-white/10 pt-4"
+              >
+                <span class="text-hood-yellow font-bold text-lg"
+                  >Legendary</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item: Hood Steak -->
+          <div
+            class="bg-hood-dark rounded-xl overflow-hidden shadow-lg group hover:-translate-y-2 transition-transform duration-300"
+          >
+            <div class="h-48 bg-gray-800 relative overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Hood Steak"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-display font-bold text-white mb-2">
+                Hood Steak
+              </h3>
+              <p class="text-gray-400 text-sm mb-4 min-h-[60px]">
+                Domača štručka z maslom, tanke rezine govejega ramsteka (aged in
+                olive oil), popečena čebula in Provolone sir.
+              </p>
+              <div
+                class="flex justify-between items-center border-t border-white/10 pt-4"
+              >
+                <span class="text-hood-yellow font-bold text-lg"
+                  >Philly Style</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item: Hood Chick -->
+          <div
+            class="bg-hood-dark rounded-xl overflow-hidden shadow-lg group hover:-translate-y-2 transition-transform duration-300"
+          >
+            <div class="h-48 bg-gray-800 relative overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Chicken Sandwich"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-display font-bold text-white mb-2">
+                Hood Chick Sandwich
+              </h3>
+              <p class="text-gray-400 text-sm mb-4 min-h-[60px]">
+                Marinirano piščančje bedro (6ur), riževa moka (GF), kumarice,
+                mehko zelje. Ocvrt v arašidovem olju.
+              </p>
+              <div
+                class="flex justify-between items-center border-t border-white/10 pt-4"
+              >
+                <span class="text-hood-yellow font-bold text-lg">Crispy</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item: Billy Bob Bacon -->
+          <div
+            class="bg-hood-dark rounded-xl overflow-hidden shadow-lg group hover:-translate-y-2 transition-transform duration-300"
+          >
+            <div class="h-48 bg-gray-800 relative overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Bacon Burger"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-display font-bold text-white mb-2">
+                Billy Bob Bacon
+              </h3>
+              <p class="text-gray-400 text-sm mb-4 min-h-[60px]">
+                Apple slaw (zelje z jabolki), paradižnik, popečena kraška
+                panceta, cheddar sir, domača beer-bq omaka in govedina.
+              </p>
+              <div
+                class="flex justify-between items-center border-t border-white/10 pt-4"
+              >
+                <span class="text-hood-yellow font-bold text-lg">Smoky</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 text-center">
+          <p class="text-gray-400 mb-6">
+            *Vsi burgerji so na voljo tudi v
+            <span class="text-hood-yellow font-bold">Vegi</span> različici
+            (polpet iz rdeče kvinoje, bukovih ostrigarjev in čičerike).
+          </p>
+          <a
+            href="#"
+            class="inline-block text-white border-b-2 border-hood-yellow pb-1 hover:text-hood-yellow transition-colors"
+            >Prenesi celoten menu (PDF)</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Sides Section -->
+    <section class="py-16 bg-hood-dark border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-display font-bold text-white mb-8 text-center">
+          Dodatki & Priloge
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            class="flex items-start space-x-4 p-4 rounded-lg bg-hood-black/50"
+          >
+            <div class="text-hood-yellow text-2xl">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <div>
+              <h4 class="text-white font-bold text-lg">Hood Krompirček</h4>
+              <p class="text-gray-400 text-sm">
+                Pristni domači ocvrt krompirček. Olupljen in narezan dnevno.
+              </p>
+            </div>
+          </div>
+          <div
+            class="flex items-start space-x-4 p-4 rounded-lg bg-hood-black/50"
+          >
+            <div class="text-hood-yellow text-2xl">
+              <i class="fas fa-drumstick-bite"></i>
+            </div>
+            <div>
+              <h4 class="text-white font-bold text-lg">Hood Nuggets</h4>
+              <p class="text-gray-400 text-sm">
+                Marinirani v pinjencu, povaljani v riževi moki (GF). 4 ali 6
+                kosov.
+              </p>
+            </div>
+          </div>
+          <div
+            class="flex items-start space-x-4 p-4 rounded-lg bg-hood-black/50"
+          >
+            <div class="text-hood-yellow text-2xl">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div>
+              <h4 class="text-white font-bold text-lg">Jackie Slaw</h4>
+              <p class="text-gray-400 text-sm">
+                Ameriška cole slaw solata z belim in rdečim zeljem ter korenjem.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="locations" class="py-24 bg-hood-black relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-display font-bold text-white">
+            Naše Lokacije
+          </h2>
+          <p class="text-gray-400 mt-4">Najdi svoj najbližji Hood.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Location: Vič -->
+          <div
+            class="bg-hood-dark p-6 rounded-lg text-center border-t-4 border-hood-yellow"
+          >
+            <h3 class="text-2xl font-bold text-white mb-2">Vič</h3>
+            <p class="text-gray-500 text-sm uppercase tracking-wide mb-4">
+              Original Location
+            </p>
+            <p class="text-gray-300 mb-4">
+              Jamova cesta 105<br />(Interspar Vič)
+            </p>
+            <div class="text-hood-yellow font-bold text-sm mb-6">
+              <i class="far fa-clock mr-2"></i>Vsak dan: 11:00 - 24:00
+            </div>
+            <a
+              href="https://maps.google.com"
+              target="_blank"
+              class="text-white hover:text-hood-yellow underline text-sm"
+              >Navodila za pot</a
+            >
+          </div>
+
+          <!-- Location: Center -->
+          <div
+            class="bg-hood-dark p-6 rounded-lg text-center border-t-4 border-hood-yellow"
+          >
+            <h3 class="text-2xl font-bold text-white mb-2">Center</h3>
+            <p class="text-gray-500 text-sm uppercase tracking-wide mb-4">
+              Nazorjeva ulica
+            </p>
+            <p class="text-gray-300 mb-4">
+              Nazorjeva ulica 4<br />Ljubljana Center
+            </p>
+            <div class="text-hood-yellow font-bold text-sm mb-6">
+              <i class="far fa-clock mr-2"></i>Vsak dan: 11:00 - 24:00
+            </div>
+            <a
+              href="https://maps.google.com"
+              target="_blank"
+              class="text-white hover:text-hood-yellow underline text-sm"
+              >Navodila za pot</a
+            >
+          </div>
+
+          <!-- Location: BTC -->
+          <div
+            class="bg-hood-dark p-6 rounded-lg text-center border-t-4 border-hood-yellow"
+          >
+            <h3 class="text-2xl font-bold text-white mb-2">BTC</h3>
+            <p class="text-gray-500 text-sm uppercase tracking-wide mb-4">
+              Tržnica BTC
+            </p>
+            <p class="text-gray-300 mb-4">
+              Ulica Gledališča BTC<br />Ljubljana
+            </p>
+            <div class="text-hood-yellow font-bold text-sm mb-6">
+              <i class="far fa-clock mr-2"></i>Vsak dan: 11:00 - 24:00
+            </div>
+            <a
+              href="https://maps.google.com"
+              target="_blank"
+              class="text-white hover:text-hood-yellow underline text-sm"
+              >Navodila za pot</a
+            >
+          </div>
+
+          <!-- Location: Šiška -->
+          <div
+            class="bg-hood-dark p-6 rounded-lg text-center border-t-4 border-hood-yellow"
+          >
+            <h3 class="text-2xl font-bold text-white mb-2">Šiška</h3>
+            <p class="text-gray-500 text-sm uppercase tracking-wide mb-4">
+              Supernova
+            </p>
+            <p class="text-gray-300 mb-4">Celovška cesta<br />Ljubljana</p>
+            <div class="text-hood-yellow font-bold text-sm mb-6">
+              <i class="far fa-clock mr-2"></i>Vsak dan: 11:00 - 24:00
+            </div>
+            <a
+              href="https://maps.google.com"
+              target="_blank"
+              class="text-white hover:text-hood-yellow underline text-sm"
+              >Navodila za pot</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      id="contact"
+      class="bg-black text-white pt-20 pb-10 border-t border-white/10"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+          <!-- Brand -->
+          <div>
+            <h2 class="text-3xl font-display font-bold text-white mb-4">
+              HOOD <span class="text-hood-yellow">BURGER</span>
+            </h2>
+            <p class="text-gray-500 text-sm leading-relaxed mb-6">
+              Sodobna ulična restavracija, kjer strežemo najokusnejše goveje
+              burgerje, steak sendviče in čisto pravi domači krompirček.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 rounded-full bg-hood-dark flex items-center justify-center text-white hover:bg-hood-yellow hover:text-hood-black transition-colors"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a
+                href="#"
+                class="w-10 h-10 rounded-full bg-hood-dark flex items-center justify-center text-white hover:bg-hood-yellow hover:text-hood-black transition-colors"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a
+                href="#"
+                class="w-10 h-10 rounded-full bg-hood-dark flex items-center justify-center text-white hover:bg-hood-yellow hover:text-hood-black transition-colors"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+            </div>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <h3
+              class="text-lg font-bold uppercase tracking-widest mb-6 text-gray-300"
+            >
+              Povezave
+            </h3>
+            <ul class="space-y-3 text-gray-500 text-sm">
+              <li>
+                <a href="#" class="hover:text-hood-yellow transition-colors"
+                  >O nas</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-hood-yellow transition-colors"
+                  >Menu</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-hood-yellow transition-colors"
+                  >Lokacije</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-hood-yellow transition-colors"
+                  >Zaposlitev</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-hood-yellow transition-colors"
+                  >Pogoji poslovanja</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-hood-yellow transition-colors"
+                  >Varovanje osebnih podatkov</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Newsletter -->
+          <div>
+            <h3
+              class="text-lg font-bold uppercase tracking-widest mb-6 text-gray-300"
+            >
+              Bodi na tekočem
+            </h3>
+            <p class="text-gray-500 text-sm mb-4">
+              Sporoči nam tvoj mail in obveščali te bomo o novostih in
+              specialnih burgerjih.
+            </p>
+            <form class="flex flex-col gap-2">
+              <input
+                type="email"
+                placeholder="Tvoj email naslov"
+                class="bg-hood-dark border border-white/10 px-4 py-3 rounded text-white focus:outline-none focus:border-hood-yellow transition-colors"
+              />
+              <button
+                type="button"
+                class="bg-hood-yellow text-hood-black font-bold uppercase py-3 rounded hover:bg-white transition-colors"
+              >
+                Prijavi se
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-600 text-xs mb-4 md:mb-0">
+            &copy; 2023 Hood Burger. Vse pravice pridržane.
+          </p>
+          <p class="text-gray-600 text-xs">
+            Cesta v Mestni log, 1000 Ljubljana | info@hoodburger.si
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Mobile Menu Logic
+      const btn = document.getElementById("mobile-menu-btn");
+      const menu = document.getElementById("mobile-menu");
+      const links = document.querySelectorAll(".mobile-link");
+      const footerLink = document.querySelector(".mobile-link-footer");
+      const navbar = document.getElementById("navbar");
+      let isMenuOpen = false;
+
+      function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        // Toggle Menu Visibility
+        if (isMenuOpen) {
+          menu.classList.remove("translate-x-full");
+          btn.classList.add("hamburger-active");
+          document.body.style.overflow = "hidden"; // Prevent scrolling
+
+          // Staggered Animation for Links
+          links.forEach((link, index) => {
+            setTimeout(() => {
+              link.classList.add("nav-link-enter");
+            }, 100 + index * 100); // Stagger delay (100ms, 200ms, 300ms...)
+          });
+
+          // Footer link animation
+          setTimeout(() => {
+            footerLink.classList.add("nav-link-enter");
+          }, 600);
+        } else {
+          menu.classList.add("translate-x-full");
+          btn.classList.remove("hamburger-active");
+          document.body.style.overflow = "";
+
+          // Reset Links
+          links.forEach((link) => {
+            link.classList.remove("nav-link-enter");
+          });
+          footerLink.classList.remove("nav-link-enter");
+        }
+      }
+
+      btn.addEventListener("click", toggleMenu);
+
+      // Close menu when clicking a link
+      links.forEach((link) => {
+        link.addEventListener("click", toggleMenu);
+      });
+
+      // Navbar Scroll Effect
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("shadow-lg", "bg-hood-black/95");
+        } else {
+          navbar.classList.remove("shadow-lg");
+        }
+      });
+    </script>
+  </body>
+</html>
